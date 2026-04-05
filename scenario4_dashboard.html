@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>醫學倫理情境四：決策結果儀表板</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen font-sans">
+
+  <div class="w-full max-w-5xl bg-white p-8 rounded-xl shadow-lg">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">情境四：醫療決策即時統計</h1>
+    
+    <div class="flex justify-end mb-4">
+      <button onclick="fetchAndRenderData()" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition shadow flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        手動更新數據
+      </button>
+    </div>
+
+    <div class="relative h-[500px] w-full">
+      <canvas id="responsesChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    // ★ 這裡是您情境四專屬的 GAS 網址，已自動加上 ?action=getStats 參數
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyeI3RMbBhtDD_R4bYjvrYf1RtsQT_ZLXfChAQPZ2HpBIr6cfZk1Tk_h9MozPWsV5j4yg/exec?action=getStats";
+
+    let myChart = null; 
+
+    // 從 Google 試算表抓取統計資料並繪圖的函式
+    async function fetchAndRenderData() {
+      try {
+        // 發送請求去拿資料
+        const response = await fetch(GAS_URL);
+        const json = await response.json();
+        
+        // 從 GAS 回傳的 JSON 結構中取出 data 物件
+        const stats = json.data; 
+
+        // 取得 canvas 元素準備畫圖
+        const ctx = document.getElementById('responsesChart').getContext('2d');
+        
+        // 如果已經存在舊圖表，先銷毀它，避免畫面重疊錯誤
+        if (myChart !== null) {
+          myChart.destroy();
+        }
+
+        // 建立新的 Chart.js 長條圖
+        myChart = new Chart(ctx, {
+          type: 'bar', 
+          data: {
+            // ★ 設定 X 軸的標籤 (已配合情境四的安置選項做適度簡化，方便投影閱讀)
+            labels: [
+              '【Option A】無限期住急性病房', 
+              '【Option B】強迫家屬帶回家', 
+              '【Option C】安寧居家(回廟裡廂房)'
+            ],
+            datasets: [{
+              label: '選擇人數',
+              // 把 GAS 算好的選項次數填進來
+              data: [stats["Option A"], stats["Option B"], stats["Option C"]],
+              backgroundColor: [
+                'rgba(239, 68, 68, 0.7)',   // 選項 A: 紅色 (Red 500)
+                'rgba(59, 130, 246, 0.7)',  // 選項 B: 藍色 (Blue 500)
+                'rgba(245, 158, 11, 0.7)'   // 選項 C: 橘黃 (Amber 500)
+              ],
+              borderColor: [
+                'rgb(239, 68, 68)',
+                'rgb(59, 130, 246)',
+                'rgb(245, 158, 11)'
+              ],
+              borderWidth: 1,
+              borderRadius: 6 // 圓角設計
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false } // 隱藏頂部圖例
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1, // 票數必定是整數
+                  font: { size: 18 } // 加大字體方便投影閱讀
+                }
+              },
+              x: {
+                ticks: {
+                  font: { size: 18 } // 加大字體方便投影閱讀
+                }
+              }
+            }
+          }
+        });
+      } catch (error) {
+        console.error("讀取資料發生錯誤:", error);
+      }
+    }
+
+    // 1. 網頁剛載入時，立刻抓取並顯示一次資料
+    fetchAndRenderData();
+
+    // 2. 設定計時器：每 10 秒自動重新整理圖表 (10000 毫秒)
+    setInterval(fetchAndRenderData, 10000);
+  </script>
+</body>
+</html>

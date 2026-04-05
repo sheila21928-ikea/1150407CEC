@@ -4,51 +4,241 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>情境 4：資源與現實的妥協</title>
-  <!-- 引入 Tailwind CSS 以快速排版 -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    :root {
+      --terracotta: #B85042;
+      --terracotta-deep: #8C3A2F;
+      --sand: #E7E8D1;
+      --sand-dark: #D5D6BC;
+      --sage: #A7BEAE;
+      --brown: #5C3D2E;
+      --cream: #FAF8F0;
+      --warm-white: #FEFCF6;
+      --text-primary: #3A2820;
+      --text-secondary: #6B5548;
+      --text-muted: #9A8578;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--cream);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .site-header {
+      position: relative;
+      background: linear-gradient(135deg, var(--brown) 0%, var(--terracotta-deep) 50%, var(--terracotta) 100%);
+      padding: 2rem 1.5rem 3.2rem;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .site-header::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: var(--cream);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+
+    .back-link {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-size: 0.95rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      padding: 0.45rem 0.95rem;
+      background: rgba(255,255,255,0.08);
+      transition: all 0.2s ease;
+      margin-bottom: 1.1rem;
+    }
+
+    .back-link:hover {
+      background: rgba(255,255,255,0.18);
+      transform: translateY(-1px);
+    }
+
+    .site-title {
+      position: relative;
+      z-index: 1;
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+      color: #fff;
+      margin-bottom: 0.65rem;
+      line-height: 1.35;
+      font-weight: 800;
+    }
+
+    .site-subtitle {
+      position: relative;
+      z-index: 1;
+      font-family: 'Noto Serif TC', serif;
+      color: rgba(255,255,255,0.78);
+      max-width: 640px;
+      margin: 0 auto;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .main-content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.6rem 1.2rem 3.4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .intro-card {
+      background: var(--warm-white);
+      border: 1px solid var(--sand-dark);
+      border-radius: 16px;
+      padding: 1.4rem 1.35rem;
+      margin-bottom: 1.4rem;
+      box-shadow: 0 6px 20px rgba(92,61,46,0.07);
+      line-height: 1.9;
+      color: var(--text-secondary);
+    }
+
+    .prompt {
+      margin-top: 1rem;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.05rem;
+    }
+
+    #options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .loading {
+      color: var(--text-muted);
+      border: 1px dashed var(--sand-dark);
+      border-radius: 14px;
+      padding: 1.3rem;
+      text-align: center;
+      background: rgba(255,255,255,0.45);
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      background: var(--warm-white);
+      border: 1px solid var(--sand-dark);
+      border-radius: 16px;
+      padding: 1rem 1.1rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      cursor: pointer;
+      transition: all 0.24s ease;
+      font-size: 1rem;
+      line-height: 1.75;
+      box-shadow: 0 4px 12px rgba(92,61,46,0.06);
+    }
+
+    .option-btn:hover {
+      border-color: var(--terracotta);
+      background: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 7px 16px rgba(92,61,46,0.12);
+    }
+
+    .option-radio {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      border: 2px solid #b9aea5;
+      margin-top: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .option-btn.selected {
+      border-color: var(--terracotta);
+      background: #fff8f5;
+      box-shadow: 0 8px 18px rgba(184,80,66,0.15);
+      opacity: 1;
+    }
+
+    .option-btn.disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .option-btn.selected .option-radio {
+      border-color: var(--terracotta);
+    }
+
+    .option-btn.selected .option-radio::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--terracotta);
+    }
+
+    @media (max-width: 640px) {
+      .intro-card { padding: 1.1rem 1rem; }
+      .option-btn { padding: 0.9rem; font-size: 0.95rem; }
+    }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-  
-  <!-- 頂部導覽列：返回原網站 -->
-  <nav class="bg-white px-4 py-3 shadow-sm flex items-center sticky top-0 z-10">
-    <a href="https://sheila21928-ikea.github.io/1150407CEC/" class="text-blue-600 hover:text-blue-800 flex items-center text-sm font-medium transition-colors">
-      <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+<body>
+  <header class="site-header">
+    <a class="back-link" href="https://sheila21928-ikea.github.io/1150407CEC/" aria-label="回到首頁">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 18l-6-6 6-6"></path>
       </svg>
       全院倫理與法律委員會
     </a>
-  </nav>
+    <h1 class="site-title">情境 4：資源與現實的妥協</h1>
+    <p class="site-subtitle">生命的重量，抉擇的天平・臨床倫理情境研討</p>
+  </header>
 
-  <!-- 主要內容區塊 -->
-  <main class="max-w-2xl mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold text-gray-800 mb-5">情境 4：資源與現實的妥協</h1>
-    
-    <!-- 情境描述 -->
-    <div class="bg-white rounded-xl shadow-sm p-6 mb-8 text-gray-700 leading-relaxed border border-gray-100">
-      <p class="mb-3">一位高齡且患有多重慢性病的阿嬤，近期因肺炎住院治療。目前病情已經穩定，醫療團隊評估已達出院標準。然而，阿嬤長期獨居在熟悉的「廟裡廂房」，家屬因為經濟困境與工作繁忙，無法提供全天候的照護，因此對阿嬤出院後的安排感到極度焦慮，不願辦理出院。</p>
-      <p>同時，醫院的急性病房面臨嚴重的滿床壓力，急診還有許多重症病患正在苦苦等候床位。</p>
-      <p class="mt-4 font-semibold text-gray-900 text-lg">面對醫院床位周轉壓力與家屬的現實照護困境，您認為醫療團隊最適當的處置為何？</p>
+  <main class="main-content">
+    <div class="intro-card">
+      <p>阿嬤病情終於相對穩定，但仍需長照。兒子表示經濟需求需馬上回大陸工作，只剩妹妹在台。</p>
+      <p class="prompt">在醫療資源有限、家屬照顧能力不足的情況下，面對醫院床位周轉壓力與家屬的現實照護困境，如何兼顧照護品質與公平正義？</p>
     </div>
 
-    <!-- 選項區：將透過 JavaScript 動態載入 -->
-    <div id="options-container" class="flex flex-col gap-4">
-      <div class="text-center text-gray-500 py-8 flex flex-col items-center justify-center" id="loading-text">
-        <svg class="animate-spin h-8 w-8 text-blue-500 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        <span>載入選項中...</span>
-      </div>
+    <div id="options-container">
+      <div class="loading" id="loading-text">載入選項中...</div>
     </div>
   </main>
 
   <script>
     // 專屬於 Scenario 4 的 Google Apps Script 網址
     const scriptURL = "https://script.google.com/macros/s/AKfycbznKlDS0b7DdvnkoazkWYuZVFPQ5IdspsFuk29xlyHrpMCHjXEHmBjP9L6WSNAKG8KMRQ/exec";
-    
+
     // 若 GAS 讀取失敗時的備用選項 (依照 Scenario 4 的 CSV 資料設定)
     const fallbackOptions = [
       "【Option A】：讓阿嬤無限期住在急性病房，直到家屬找到完美的解決方案",
@@ -66,13 +256,13 @@
       try {
         const response = await fetch(scriptURL);
         const result = await response.json();
-        
+
         if (result.status === "success" && result.data && result.data.length > 0) {
           // 動態讀取 CSV 第一列的所有標題或內容
-          let options = Object.keys(result.data[0]); 
-          
+          let options = Object.keys(result.data[0]);
+
           if (options.length > 0 && !options[0].includes("Option")) {
-              options = Object.values(result.data[0]);
+            options = Object.values(result.data[0]);
           }
           renderButtons(options);
         } else {
@@ -87,19 +277,19 @@
     // --- 2. 渲染按鈕到畫面上 ---
     function renderButtons(options) {
       const container = document.getElementById('options-container');
-      container.innerHTML = ''; // 清除載入動畫
-      
-      options.forEach((optionText, index) => {
+      container.innerHTML = '';
+
+      options.forEach((optionText) => {
         if (!optionText || optionText.trim() === "") return;
 
         const btn = document.createElement('button');
-        btn.className = "w-full text-left bg-white border-2 border-transparent hover:border-blue-400 hover:bg-blue-50 hover:shadow-md rounded-2xl p-5 shadow-sm transition-all duration-200 text-gray-800 text-base md:text-lg relative group flex items-start focus:outline-none";
-        
+        btn.className = "option-btn";
+
         btn.innerHTML = `
-          <span class="flex-shrink-0 h-6 w-6 rounded-full border-2 border-gray-300 mr-4 group-hover:border-blue-500 flex items-center justify-center mt-0.5 transition-colors duration-200"></span>
-          <span class="leading-relaxed font-medium">${optionText}</span>
+          <span class="option-radio"></span>
+          <span class="option-text">${optionText}</span>
         `;
-        
+
         btn.onclick = () => submitAnswer(optionText, btn);
         container.appendChild(btn);
       });
@@ -108,40 +298,33 @@
     // --- 3. 傳送使用者的選擇回 Google Apps Script ---
     async function submitAnswer(selectedOption, clickedBtn) {
       const buttons = document.querySelectorAll('#options-container button');
-      
-      // 鎖定按鈕防止重複點擊
-      buttons.forEach(b => {
-        b.disabled = true;
-        b.classList.add('opacity-50', 'cursor-not-allowed');
-      });
-      
-      // 按鈕選取狀態
-      clickedBtn.classList.remove('opacity-50', 'border-transparent');
-      clickedBtn.classList.add('border-blue-500', 'bg-blue-50', 'opacity-100', 'shadow-md');
-      const radioCircle = clickedBtn.querySelector('span.rounded-full');
-      if (radioCircle) {
-         radioCircle.classList.replace('border-gray-300', 'border-blue-500');
-         radioCircle.innerHTML = '<div class="h-3 w-3 bg-blue-500 rounded-full"></div>';
-      }
 
-      const originalText = clickedBtn.querySelector('span.leading-relaxed').innerText;
-      clickedBtn.querySelector('span.leading-relaxed').innerText = "記錄回覆中，請稍候...";
+      buttons.forEach((b) => {
+        b.disabled = true;
+        b.classList.add('disabled');
+      });
+
+      clickedBtn.classList.remove('disabled');
+      clickedBtn.classList.add('selected');
+
+      const originalText = clickedBtn.querySelector('.option-text').innerText;
+      clickedBtn.querySelector('.option-text').innerText = "記錄回覆中，請稍候...";
 
       try {
         const response = await fetch(scriptURL, {
           method: "POST",
           headers: {
             // 使用 text/plain 避免 CORS 問題
-            "Content-Type": "text/plain;charset=utf-8", 
+            "Content-Type": "text/plain;charset=utf-8",
           },
           body: JSON.stringify({
             ID: "Scenario_4", // 設定 ID 為 Scenario 4
             User_Choice: selectedOption
           })
         });
-        
+
         const result = await response.json();
-        
+
         if (result.status === "success") {
           alert("回覆已成功記錄！感謝您的參與。");
           // 導回主選單頁面
@@ -159,18 +342,13 @@
 
     // --- 錯誤還原機制 ---
     function resetButtons(buttons, clickedBtn, originalText) {
-      buttons.forEach(b => {
+      buttons.forEach((b) => {
         b.disabled = false;
-        b.classList.remove('opacity-50', 'cursor-not-allowed', 'border-blue-500', 'bg-blue-50', 'shadow-md');
-        b.classList.add('border-transparent');
-        const radioCircle = b.querySelector('span.rounded-full');
-        if (radioCircle) {
-           radioCircle.classList.replace('border-blue-500', 'border-gray-300');
-           radioCircle.innerHTML = '';
-        }
+        b.classList.remove('disabled', 'selected');
       });
-      if(clickedBtn) {
-        clickedBtn.querySelector('span.leading-relaxed').innerText = originalText;
+
+      if (clickedBtn) {
+        clickedBtn.querySelector('.option-text').innerText = originalText;
       }
     }
   </script>

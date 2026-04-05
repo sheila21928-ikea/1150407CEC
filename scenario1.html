@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>情境 1：面對拒絕治療的病患</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  
+  <nav class="bg-white px-4 py-3 shadow-sm flex items-center sticky top-0 z-10">
+    <a href="https://sheila21928-ikea.github.io/1150407CEC/" class="text-blue-600 hover:text-blue-800 flex items-center text-sm font-medium transition-colors">
+      <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+      全院倫理與法律委員會
+    </a>
+  </nav>
+
+  <main class="max-w-2xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold text-gray-800 mb-5">情境 1：面對拒絕治療的病患</h1>
+    
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-8 text-gray-700 leading-relaxed border border-gray-100">
+      <p>一位 82 歲末期腎病變患者，近期因病情惡化，醫療團隊建議開始進行血液透析以維持生命。然而，病患意識清楚，堅決表示不想洗腎，認為自己不想再受苦。家屬則非常焦急，強烈要求醫師「一定要救救媽媽」。</p>
+      <p class="mt-4 font-semibold text-gray-900 text-lg">身為第一線主治醫師，您會如何處置？</p>
+    </div>
+
+    <div id="options-container" class="flex flex-col gap-4">
+      <div class="text-center text-gray-500 py-8 flex flex-col items-center justify-center" id="loading-text">
+        <svg class="animate-spin h-8 w-8 text-blue-500 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>載入選項中...</span>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // 你的 Google Apps Script 網址
+    const scriptURL = "https://script.google.com/macros/s/AKfycbz0XcQli6CMNETNwmubW3nDB3HUgUWhdR0wKmdZNHMAtMx5glNCJYYu8YKHYNDoOoPiMw/exec";
+    
+    // 若 GAS 讀取失敗時的備用選項（對應你提供的 CSV）
+    const fallbackOptions = [
+      "【Option A】：強迫推去洗腎，因為「救命第一」，醫師有責任延續生命",
+      "【Option B】：尊重她的決定，並給予緩解不適的藥物，陪伴她走完最後一程",
+      "【Option C】：聯絡精神科醫師，認定她有憂鬱傾向，撤銷她的拒絕權"
+    ];
+
+    // 網頁載入完成後執行
+    document.addEventListener("DOMContentLoaded", () => {
+      fetchOptions();
+    });
+
+    // --- 1. 從 Google Apps Script 讀取選項 ---
+    async function fetchOptions() {
+      try {
+        const response = await fetch(scriptURL);
+        const result = await response.json();
+        
+        if (result.status === "success" && result.data && result.data.length > 0) {
+          // 根據你的 CSV 結構，選項可能在第一列資料的 keys 中
+          let options = Object.keys(result.data[0]); 
+          
+          // 若實際選項存放在 value 中，也可動態切換
+          if (options.length > 0 && !options[0].includes("Option")) {
+              options = Object.values(result.data[0]);
+          }
+          renderButtons(options);
+        } else {
+          renderButtons(fallbackOptions);
+        }
+      } catch (error) {
+        console.error("從 Google Sheet 讀取選項失敗，使用備用選項:", error);
+        renderButtons(fallbackOptions);
+      }
+    }
+
+    // --- 2. 渲染按鈕到畫面上 ---
+    function renderButtons(options) {
+      const container = document.getElementById('options-container');
+      container.innerHTML = ''; // 清除載入動畫
+      
+      options.forEach((optionText, index) => {
+        if (!optionText || optionText.trim() === "") return;
+
+        const btn = document.createElement('button');
+        // 設計按鈕樣式：圓角、陰影、Hover 效果
+        btn.className = "w-full text-left bg-white border-2 border-transparent hover:border-blue-400 hover:bg-blue-50 hover:shadow-md rounded-2xl p-5 shadow-sm transition-all duration-200 text-gray-800 text-base md:text-lg relative group flex items-start focus:outline-none";
+        
+        btn.innerHTML = `
+          <span class="flex-shrink-0 h-6 w-6 rounded-full border-2 border-gray-300 mr-4 group-hover:border-blue-500 flex items-center justify-center mt-0.5 transition-colors duration-200"></span>
+          <span class="leading-relaxed font-medium">${optionText}</span>
+        `;
+        
+        // 點擊事件
+        btn.onclick = () => submitAnswer(optionText, btn);
+        container.appendChild(btn);
+      });
+    }
+
+    // --- 3. 傳送使用者的選擇回 Google Apps Script ---
+    async function submitAnswer(selectedOption, clickedBtn) {
+      const buttons = document.querySelectorAll('#options-container button');
+      
+      // 鎖定所有按鈕防止重複點擊
+      buttons.forEach(b => {
+        b.disabled = true;
+        b.classList.add('opacity-50', 'cursor-not-allowed');
+      });
+      
+      // 將被點擊的按鈕標示為選取狀態
+      clickedBtn.classList.remove('opacity-50', 'border-transparent');
+      clickedBtn.classList.add('border-blue-500', 'bg-blue-50', 'opacity-100', 'shadow-md');
+      const radioCircle = clickedBtn.querySelector('span.rounded-full');
+      if (radioCircle) {
+         radioCircle.classList.replace('border-gray-300', 'border-blue-500');
+         radioCircle.innerHTML = '<div class="h-3 w-3 bg-blue-500 rounded-full"></div>';
+      }
+
+      // 替換原本的提示文字為傳送中
+      const originalText = clickedBtn.querySelector('span.leading-relaxed').innerText;
+      clickedBtn.querySelector('span.leading-relaxed').innerText = "記錄回覆中，請稍候...";
+
+      try {
+        // 使用 text/plain 發送 POST，避免 Apps Script 出現 CORS 跨域阻擋問題
+        const response = await fetch(scriptURL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8", 
+          },
+          body: JSON.stringify({
+            ID: "Scenario_1",
+            User_Choice: selectedOption
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (result.status === "success") {
+          alert("回覆已成功記錄！感謝您的參與。");
+          // 自動導回上一頁 (主網站)
+          window.location.href = "https://sheila21928-ikea.github.io/1150407CEC/";
+        } else {
+          alert("發生錯誤：" + result.message);
+          resetButtons(buttons, clickedBtn, originalText);
+        }
+      } catch (error) {
+        console.error("提交失敗:", error);
+        alert("提交失敗，請檢查網路連線或稍後再試。");
+        resetButtons(buttons, clickedBtn, originalText);
+      }
+    }
+
+    // --- 錯誤時還原按鈕狀態 ---
+    function resetButtons(buttons, clickedBtn, originalText) {
+      buttons.forEach(b => {
+        b.disabled = false;
+        b.classList.remove('opacity-50', 'cursor-not-allowed', 'border-blue-500', 'bg-blue-50', 'shadow-md');
+        b.classList.add('border-transparent');
+        const radioCircle = b.querySelector('span.rounded-full');
+        if (radioCircle) {
+           radioCircle.classList.replace('border-blue-500', 'border-gray-300');
+           radioCircle.innerHTML = '';
+        }
+      });
+      if(clickedBtn) {
+        clickedBtn.querySelector('span.leading-relaxed').innerText = originalText;
+      }
+    }
+  </script>
+</body>
+</html>

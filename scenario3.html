@@ -23,6 +23,8 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html { font-size: 16px; }
+
     body {
       font-family: 'Noto Sans TC', sans-serif;
       background: var(--cream);
@@ -74,6 +76,10 @@
       background: rgba(255,255,255,0.08);
       transition: all 0.2s ease;
       margin-bottom: 1.1rem;
+      max-width: 100%;
+      flex-wrap: wrap;
+      text-align: center;
+      justify-content: center;
     }
 
     .back-link:hover {
@@ -101,6 +107,7 @@
       margin: 0 auto;
       line-height: 1.7;
       font-size: 0.95rem;
+      overflow-wrap: anywhere;
     }
 
     .main-content {
@@ -120,6 +127,7 @@
       box-shadow: 0 6px 20px rgba(92,61,46,0.07);
       line-height: 1.9;
       color: var(--text-secondary);
+      overflow-wrap: anywhere;
     }
 
     .prompt {
@@ -162,6 +170,11 @@
       font-size: 1rem;
       line-height: 1.75;
       box-shadow: 0 4px 12px rgba(92,61,46,0.06);
+    }
+
+    .option-text {
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .option-btn:hover {
@@ -208,8 +221,18 @@
     }
 
     @media (max-width: 640px) {
+      .site-header { padding: 1.8rem 1rem 3rem; }
+      .back-link { width: 100%; max-width: 22rem; margin-inline: auto; }
+      .site-subtitle br { display: none; }
+      .main-content { padding: 2rem 0.9rem 2.8rem; }
       .intro-card { padding: 1.1rem 1rem; }
       .option-btn { padding: 0.9rem; font-size: 0.95rem; }
+    }
+
+    @media (max-width: 420px) {
+      .site-title { font-size: 1.35rem; }
+      .option-btn { gap: 0.6rem; }
+      .option-radio { width: 20px; height: 20px; }
     }
   </style>
 </head>

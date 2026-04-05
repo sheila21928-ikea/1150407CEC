@@ -124,6 +124,7 @@
     max-width: 600px;
     margin: 0 auto;
     animation: fadeUp 0.8s ease-out 0.4s both;
+    overflow-wrap: anywhere;
   }
 
   .header-meta {
@@ -141,6 +142,7 @@
     gap: 0.4rem;
     color: rgba(255,255,255,0.6);
     font-size: 0.8rem;
+    min-width: 0;
   }
 
   .header-meta-item svg {
@@ -1090,12 +1092,21 @@
     .card-desc { display: none; }
 
     .header-meta { gap: 1rem; }
+    .header-meta-item {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+      flex-wrap: wrap;
+    }
     .site-header { padding: 2.5rem 1.5rem 3.5rem; }
+    .site-subtitle br { display: none; }
   }
 
   @media (max-width: 420px) {
     .site-title { font-size: 1.7rem; }
     .site-subtitle { font-size: 0.88rem; }
+    .header-badge { padding: 0.35rem 0.8rem; }
+    .header-badge span { font-size: 0.72rem; }
   }
 </style>
 </head>

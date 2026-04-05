@@ -434,6 +434,67 @@
     font-style: italic;
   }
 
+  .justice-panel {
+    background: #ECEBE7;
+    border: 1px solid var(--sand-dark);
+    border-radius: 16px;
+    box-shadow: 0 10px 24px rgba(92, 61, 46, 0.08);
+    padding: 1.9rem 1.8rem 2rem;
+  }
+
+  .justice-header {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.35rem;
+    color: var(--text-primary);
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-weight: 900;
+  }
+
+  .justice-header svg {
+    width: 58px;
+    height: 58px;
+    stroke: #6B6B6B;
+    flex-shrink: 0;
+  }
+
+  .justice-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.35rem;
+  }
+
+  .justice-card {
+    background: #F2F2F2;
+    border: 1px solid #ded7ce;
+    box-shadow: 0 3px 8px rgba(92, 61, 46, 0.08);
+    overflow: hidden;
+  }
+
+  .justice-card-head {
+    background: #845539;
+    color: #fff;
+    padding: 1rem 1.2rem;
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.55rem, 3vw, 1.95rem);
+    font-weight: 700;
+  }
+
+  .justice-list {
+    margin: 0;
+    padding: 1.2rem 1.45rem 1.35rem 2.3rem;
+    color: #736258;
+    font-size: clamp(1.06rem, 2.2vw, 1.18rem);
+    line-height: 1.6;
+    min-height: 312px;
+  }
+
+  .justice-list li + li {
+    margin-top: 0.65rem;
+  }
+
   .section-intro {
     text-align: center;
     margin-bottom: 3rem;
@@ -684,6 +745,23 @@
       grid-template-columns: 1fr;
     }
 
+    .justice-panel {
+      padding: 1.2rem;
+    }
+
+    .justice-header svg {
+      width: 46px;
+      height: 46px;
+    }
+
+    .justice-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .justice-list {
+      min-height: auto;
+    }
+
     .beneficence-item {
       min-height: 64px;
       padding: 0.5rem 0.8rem;
@@ -788,7 +866,7 @@
     <span class="p-en">Non-maleficence</span>
   </div>
   <!-- 公平正義 -->
-  <div class="principle-chip">
+  <div class="principle-chip is-clickable" id="justice-trigger" role="button" tabindex="0" aria-expanded="false" aria-controls="justice-detail">
     <svg viewBox="0 0 24 24" fill="none" stroke="var(--brown-light)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><polyline points="4 8 12 3 20 8"/><path d="M4 8c0 3-2 5 0 8h0"/><path d="M20 8c0 3 2 5 0 8h0"/><path d="M4 16h4"/><path d="M16 16h4"/></svg>
     <span class="p-label">公平正義</span>
     <span class="p-en">Justice</span>
@@ -890,6 +968,44 @@
           <p>兩者互補，但行善義務的強度與範圍往往需要更多臨床判斷與資源衡量。</p>
         </div>
       </aside>
+    </div>
+  </div>
+</section>
+
+<section class="principle-detail" id="justice-detail">
+  <div class="justice-panel">
+    <h2 class="justice-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="3" x2="12" y2="21"/><polyline points="4 8 12 3 20 8"/><path d="M4 8c0 3-2 5 0 8h0"/><path d="M20 8c0 3 2 5 0 8h0"/><path d="M4 16h4"/><path d="M16 16h4"/></svg>
+      公平正義原則 Justice
+    </h2>
+
+    <div class="justice-grid">
+      <article class="justice-card">
+        <header class="justice-card-head">公平 Fairness</header>
+        <ul class="justice-list">
+          <li>醫療資源公平分配（疫苗、稀缺資源）</li>
+          <li>公平的機會達到適當功能（proper functioning）和福祉（well-being）</li>
+          <li>涉及病情告知的權利</li>
+        </ul>
+      </article>
+
+      <article class="justice-card">
+        <header class="justice-card-head">應得 To Deserve</header>
+        <ul class="justice-list">
+          <li>應得的治療與關懷</li>
+          <li>依病情嚴重度與需求分配照護優先順序</li>
+          <li>不因社會地位或背景影響醫療品質</li>
+        </ul>
+      </article>
+
+      <article class="justice-card">
+        <header class="justice-card-head">權益 Entitlement</header>
+        <ul class="justice-list">
+          <li>基於基本人權應享有的照護權益</li>
+          <li>福祉包含：健康、安全、知識、尊重、自主等</li>
+          <li>全民健康照護的基本保障</li>
+        </ul>
+      </article>
     </div>
   </div>
 </section>
@@ -1015,6 +1131,8 @@
   const autonomyDetail = document.getElementById('autonomy-detail');
   const beneficenceTrigger = document.getElementById('beneficence-trigger');
   const beneficenceDetail = document.getElementById('beneficence-detail');
+  const justiceTrigger = document.getElementById('justice-trigger');
+  const justiceDetail = document.getElementById('justice-detail');
 
   function openAutonomyDetail() {
     autonomyDetail.classList.add('show');
@@ -1041,6 +1159,20 @@
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       openBeneficenceDetail();
+    }
+  });
+
+  function openJusticeDetail() {
+    justiceDetail.classList.add('show');
+    justiceTrigger.setAttribute('aria-expanded', 'true');
+    justiceDetail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  justiceTrigger.addEventListener('click', openJusticeDetail);
+  justiceTrigger.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openJusticeDetail();
     }
   });
 </script>

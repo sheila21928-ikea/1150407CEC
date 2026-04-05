@@ -173,6 +173,10 @@
     transition: transform 0.2s, box-shadow 0.2s;
   }
 
+  .principle-chip.is-clickable {
+    cursor: pointer;
+  }
+
   .principle-chip:first-child { border-radius: 12px 0 0 12px; }
   .principle-chip:last-child { border-radius: 0 12px 12px 0; }
   .principle-chip:not(:last-child) { border-right: none; }
@@ -207,6 +211,91 @@
     max-width: 900px;
     margin: 0 auto;
     padding: 3.5rem 1.5rem 4rem;
+  }
+
+  .principle-detail {
+    max-width: 1120px;
+    margin: 1.5rem auto 0;
+    padding: 0 1.5rem;
+    display: none;
+    animation: fadeUp 0.35s ease-out both;
+  }
+
+  .principle-detail.show {
+    display: block;
+  }
+
+  .autonomy-panel {
+    background: #F6F3EB;
+    border: 1px solid var(--sand-dark);
+    border-radius: 16px;
+    box-shadow: 0 10px 24px rgba(92, 61, 46, 0.08);
+    padding: 1.8rem;
+  }
+
+  .autonomy-title {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.55rem;
+    color: var(--text-primary);
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.5rem, 4vw, 2.4rem);
+    font-weight: 800;
+  }
+
+  .autonomy-subtitle {
+    margin: 0 0 1.4rem 2.7rem;
+    color: var(--text-secondary);
+    font-size: clamp(0.95rem, 2.4vw, 1.02rem);
+    font-style: italic;
+  }
+
+  .consent-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .consent-card {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--sand-dark);
+    background: #fff;
+  }
+
+  .consent-head {
+    background: linear-gradient(135deg, var(--terracotta) 0%, #CA6B5D 100%);
+    color: #fff;
+    padding: 0.9rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.32rem;
+    font-weight: 700;
+    min-height: 86px;
+  }
+
+  .consent-head svg {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    fill: rgba(255,255,255,0.92);
+  }
+
+  .consent-body {
+    list-style: disc;
+    margin: 0;
+    padding: 1.1rem 1.35rem 1.25rem 2.2rem;
+    color: var(--text-secondary);
+    font-size: 1.22rem;
+    line-height: 1.75;
+    min-height: 264px;
+  }
+
+  .consent-body li + li {
+    margin-top: 0.35rem;
   }
 
   .section-intro {
@@ -432,6 +521,28 @@
     .principle-chip:nth-child(3) { border-radius: 0 0 0 12px; border-top: none; }
     .principle-chip:last-child { border-radius: 0 0 12px 0; border-top: none; }
 
+    .autonomy-panel {
+      padding: 1.25rem;
+    }
+
+    .autonomy-subtitle {
+      margin-left: 0;
+      margin-bottom: 1rem;
+    }
+
+    .consent-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .consent-head {
+      min-height: auto;
+    }
+
+    .consent-body {
+      min-height: auto;
+      font-size: 1.1rem;
+    }
+
     .scenario-card {
       grid-template-columns: 56px 1fr 32px;
       padding: 1.2rem 1rem;
@@ -490,7 +601,7 @@
 <!-- ===== FOUR PRINCIPLES ===== -->
 <div class="principles-strip">
   <!-- 尊重自主 -->
-  <div class="principle-chip">
+  <div class="principle-chip is-clickable" id="autonomy-trigger" role="button" tabindex="0" aria-expanded="false" aria-controls="autonomy-detail">
     <svg viewBox="0 0 24 24" fill="none" stroke="var(--terracotta)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
     <span class="p-label">尊重自主</span>
     <span class="p-en">Autonomy</span>
@@ -514,6 +625,57 @@
     <span class="p-en">Justice</span>
   </div>
 </div>
+
+<section class="principle-detail" id="autonomy-detail">
+  <div class="autonomy-panel">
+    <h2 class="autonomy-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--terracotta-light)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M14 3v5h5"/><path d="M9 16l2.2-2.2 1.6 1.6 2.4-2.4"/></svg>
+      知情同意的三大要素
+    </h2>
+    <p class="autonomy-subtitle">Informed Consent — 尊重自主的核心實踐</p>
+
+    <div class="consent-grid">
+      <article class="consent-card">
+        <header class="consent-head">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5a2 2 0 0 1 2-2h4a3 3 0 0 1 3 3v15a1 1 0 0 1-1.5.86L7 20.2l-3.5 1.66A1 1 0 0 1 2 21V5zM21 5a2 2 0 0 0-2-2h-4a3 3 0 0 0-3 3v15a1 1 0 0 0 1.5.86l3.5-1.66 3.5 1.66A1 1 0 0 0 22 21V5z"/></svg>
+          充分告知 Information
+        </header>
+        <ul class="consent-body">
+          <li>說明疾病診斷、預後、治療選項。</li>
+          <li>說明各選項的風險與效益。</li>
+          <li>說明不治療的可能後果。</li>
+          <li>以病人能理解的語言溝通。</li>
+        </ul>
+      </article>
+
+      <article class="consent-card">
+        <header class="consent-head">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2a7 7 0 0 0 0 14h2V2H8zm8 0h-2v14h2a7 7 0 0 0 0-14zM8 18a1 1 0 0 0-.8.4l-2 2.5A1 1 0 0 0 6 22h12a1 1 0 0 0 .8-1.6l-2-2.5a1 1 0 0 0-.8-.4H8z"/></svg>
+          理解能力 Capacity
+        </header>
+        <ul class="consent-body">
+          <li>病人能理解所接收的資訊。</li>
+          <li>能對資訊做出推理與判斷。</li>
+          <li>能力可能隨病況與時間變動。</li>
+          <li>需由臨床團隊持續評估。</li>
+        </ul>
+      </article>
+
+      <article class="consent-card">
+        <header class="consent-head">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a2 2 0 0 0-2 2v8.35l-1.28-1.1a2 2 0 1 0-2.64 3l4.78 4.1a2 2 0 0 0 2.28 0l4.78-4.1a2 2 0 1 0-2.64-3L14 12.35V4a2 2 0 0 0-2-2zM6 20a1 1 0 1 0 0 2h12a1 1 0 1 0 0-2H6z"/></svg>
+          自由意志 Voluntariness
+        </header>
+        <ul class="consent-body">
+          <li>決定出於病人本人的意願。</li>
+          <li>不受家屬、醫療人員脅迫。</li>
+          <li>不受不當外在壓力影響。</li>
+          <li>家屬可見證，但不替代決定。</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
 
 <!-- ===== MAIN: SCENARIO CARDS ===== -->
 <main class="main-content">
@@ -630,6 +792,25 @@
     出處：<em>Principles of Biomedical Ethics</em>, 8th ed. (Beauchamp &amp; Childress)
   </p>
 </footer>
+
+<script>
+  const autonomyTrigger = document.getElementById('autonomy-trigger');
+  const autonomyDetail = document.getElementById('autonomy-detail');
+
+  function openAutonomyDetail() {
+    autonomyDetail.classList.add('show');
+    autonomyTrigger.setAttribute('aria-expanded', 'true');
+    autonomyDetail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  autonomyTrigger.addEventListener('click', openAutonomyDetail);
+  autonomyTrigger.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openAutonomyDetail();
+    }
+  });
+</script>
 
 </body>
 </html>

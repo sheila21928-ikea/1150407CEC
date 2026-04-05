@@ -298,6 +298,142 @@
     margin-top: 0.35rem;
   }
 
+  .beneficence-panel {
+    background: #ECEBE7;
+    border: 1px solid var(--sand-dark);
+    border-radius: 16px;
+    box-shadow: 0 10px 24px rgba(92, 61, 46, 0.08);
+    padding: 1.9rem 1.8rem 2rem;
+  }
+
+  .beneficence-header {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 0.45rem;
+    color: var(--text-primary);
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-weight: 900;
+  }
+
+  .beneficence-header svg {
+    width: 56px;
+    height: 56px;
+    fill: var(--brown-light);
+    flex-shrink: 0;
+  }
+
+  .beneficence-subtitle {
+    margin-left: 4.1rem;
+    margin-bottom: 1.7rem;
+    color: var(--text-secondary);
+    font-size: clamp(0.96rem, 2.2vw, 1rem);
+    font-style: italic;
+  }
+
+  .beneficence-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 1.35rem;
+    align-items: start;
+  }
+
+  .beneficence-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.72rem;
+  }
+
+  .beneficence-item {
+    background: #fff;
+    border: 1px solid #ded7ce;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.95rem;
+    min-height: 74px;
+    padding: 0.55rem 1rem;
+    box-shadow: 0 3px 8px rgba(92, 61, 46, 0.08);
+  }
+
+  .beneficence-number {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #82A894;
+    color: #fff;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.7rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .beneficence-text {
+    color: var(--text-primary);
+    font-size: clamp(1.05rem, 2.2vw, 1.18rem);
+    line-height: 1.45;
+  }
+
+  .beneficence-compare {
+    background: #F2F2F2;
+    border: 1px solid #ded7ce;
+    box-shadow: 0 3px 8px rgba(92, 61, 46, 0.08);
+    padding: 0;
+  }
+
+  .beneficence-compare-inner {
+    border-top: 7px solid #82A894;
+    padding: 1.2rem 1.2rem 1.35rem;
+  }
+
+  .beneficence-compare h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.25rem, 2.8vw, 1.45rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .compare-box {
+    color: #fff;
+    text-align: center;
+    padding: 1.05rem 0.6rem;
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    font-weight: 800;
+  }
+
+  .compare-box.proactive {
+    background: #89A997;
+  }
+
+  .compare-box.passive {
+    background: #C96F62;
+  }
+
+  .beneficence-compare p {
+    color: var(--text-secondary);
+    font-size: clamp(1.04rem, 2.1vw, 1.15rem);
+    line-height: 1.45;
+    margin-bottom: 0.85rem;
+  }
+
+  .beneficence-compare p:last-child {
+    margin-bottom: 0;
+    font-style: italic;
+  }
+
   .section-intro {
     text-align: center;
     margin-bottom: 3rem;
@@ -530,6 +666,39 @@
       margin-bottom: 1rem;
     }
 
+    .beneficence-panel {
+      padding: 1.2rem;
+    }
+
+    .beneficence-header svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    .beneficence-subtitle {
+      margin-left: 0;
+      margin-bottom: 1.1rem;
+    }
+
+    .beneficence-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .beneficence-item {
+      min-height: 64px;
+      padding: 0.5rem 0.8rem;
+    }
+
+    .beneficence-number {
+      width: 44px;
+      height: 44px;
+      font-size: 1.45rem;
+    }
+
+    .compare-row {
+      grid-template-columns: 1fr;
+    }
+
     .consent-grid {
       grid-template-columns: 1fr;
     }
@@ -607,7 +776,7 @@
     <span class="p-en">Autonomy</span>
   </div>
   <!-- 行善原則 -->
-  <div class="principle-chip">
+  <div class="principle-chip is-clickable" id="beneficence-trigger" role="button" tabindex="0" aria-expanded="false" aria-controls="beneficence-detail">
     <svg viewBox="0 0 24 24" fill="none" stroke="var(--sage-deep)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
     <span class="p-label">行善原則</span>
     <span class="p-en">Beneficence</span>
@@ -673,6 +842,54 @@
           <li>家屬可見證，但不替代決定。</li>
         </ul>
       </article>
+    </div>
+  </div>
+</section>
+
+<section class="principle-detail" id="beneficence-detail">
+  <div class="beneficence-panel">
+    <h2 class="beneficence-header">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3.6 3.6 0 0 1 3.6 3.6 3.6 3.6 0 1 1-7.2 0A3.6 3.6 0 0 1 12 2zm7 8.8c.7 0 1.3.6 1.3 1.3 0 1.1-.6 2.2-1.5 2.8l-2.9 2 2.6 2.6a1.3 1.3 0 1 1-1.8 1.8l-3.5-3.5a1.3 1.3 0 0 1 .2-2l3.7-2.6c.3-.2.5-.5.6-.8h-2.5a1.3 1.3 0 0 1 0-2.6H19zM3 13.8c0-1.5 1.2-2.7 2.7-2.7h4.9a1.3 1.3 0 0 1 0 2.6H6.1a.1.1 0 0 0-.1.1v1.7h7a1.3 1.3 0 0 1 0 2.6H6V20a1.3 1.3 0 1 1-2.6 0v-6.2z"/></svg>
+      行善原則 Beneficence
+    </h2>
+    <p class="beneficence-subtitle">主動積極地為病人謀取最大利益</p>
+
+    <div class="beneficence-grid">
+      <div class="beneficence-list">
+        <article class="beneficence-item">
+          <span class="beneficence-number">1</span>
+          <p class="beneficence-text">保護、維護他人的權利</p>
+        </article>
+        <article class="beneficence-item">
+          <span class="beneficence-number">2</span>
+          <p class="beneficence-text">避免傷害產生</p>
+        </article>
+        <article class="beneficence-item">
+          <span class="beneficence-number">3</span>
+          <p class="beneficence-text">移除可能造成傷害的因子</p>
+        </article>
+        <article class="beneficence-item">
+          <span class="beneficence-number">4</span>
+          <p class="beneficence-text">協助有困難的人</p>
+        </article>
+        <article class="beneficence-item">
+          <span class="beneficence-number">5</span>
+          <p class="beneficence-text">救人於危難之時</p>
+        </article>
+      </div>
+
+      <aside class="beneficence-compare">
+        <div class="beneficence-compare-inner">
+          <h3>行善 vs. 不傷害 的差異</h3>
+          <div class="compare-row">
+            <div class="compare-box proactive">行善 = 主動</div>
+            <div class="compare-box passive">不傷害 = 被動</div>
+          </div>
+          <p>行善原則要求我們「積極行動」去促進病人的福祉。</p>
+          <p>不傷害原則要求我們「消極避免」對病人造成傷害。</p>
+          <p>兩者互補，但行善義務的強度與範圍往往需要更多臨床判斷與資源衡量。</p>
+        </div>
+      </aside>
     </div>
   </div>
 </section>
@@ -796,6 +1013,8 @@
 <script>
   const autonomyTrigger = document.getElementById('autonomy-trigger');
   const autonomyDetail = document.getElementById('autonomy-detail');
+  const beneficenceTrigger = document.getElementById('beneficence-trigger');
+  const beneficenceDetail = document.getElementById('beneficence-detail');
 
   function openAutonomyDetail() {
     autonomyDetail.classList.add('show');
@@ -808,6 +1027,20 @@
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       openAutonomyDetail();
+    }
+  });
+
+  function openBeneficenceDetail() {
+    beneficenceDetail.classList.add('show');
+    beneficenceTrigger.setAttribute('aria-expanded', 'true');
+    beneficenceDetail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  beneficenceTrigger.addEventListener('click', openBeneficenceDetail);
+  beneficenceTrigger.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openBeneficenceDetail();
     }
   });
 </script>

@@ -4,109 +4,219 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>醫學倫理情境二：決策結果儀表板</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+  :root {
+    --terracotta: #B85042;
+    --terracotta-deep: #8C3A2F;
+    --sand: #E7E8D1;
+    --sand-dark: #D5D6BC;
+    --cream: #FAF8F0;
+    --warm-white: #FEFCF6;
+    --brown: #5C3D2E;
+    --text-primary: #3A2820;
+    --text-secondary: #6B5548;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--cream);
+    color: var(--text-primary);
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .site-header {
+    position: relative;
+    background: linear-gradient(135deg, var(--brown) 0%, var(--terracotta-deep) 50%, var(--terracotta) 100%);
+    padding: 2.5rem 1.5rem 3.2rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .site-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 54px;
+    background: var(--cream);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+
+  .header-badge {
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: rgba(255,255,255,0.85);
+    border-radius: 999px;
+    padding: 0.38rem 1rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .site-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.8rem, 4.2vw, 2.7rem);
+    color: #fff;
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+  }
+
+  .site-subtitle {
+    font-family: 'Noto Serif TC', serif;
+    color: rgba(255,255,255,0.76);
+    font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+  }
+
+  .main-content {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 2.2rem 1.2rem 3rem;
+  }
+
+  .dashboard-card {
+    background: var(--warm-white);
+    border: 1px solid var(--sand-dark);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(92,61,46,0.1);
+    padding: 1.4rem;
+  }
+
+  .toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  .refresh-btn {
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-deep) 100%);
+    color: #fff;
+    border-radius: 10px;
+    padding: 0.62rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 6px 14px rgba(140,58,47,0.28);
+  }
+
+  .refresh-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(140,58,47,0.35);
+  }
+
+  .chart-wrap {
+    position: relative;
+    height: min(60vh, 520px);
+    min-height: 320px;
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-card { padding: 1rem; }
+    .chart-wrap { height: 52vh; }
+  }
+</style>
 </head>
-<body class="bg-gray-100 flex justify-center items-center min-h-screen font-sans">
+<body>
+  <header class="site-header">
+    <div class="header-badge">SCENARIO 2 DASHBOARD</div>
+    <h1 class="site-title">情境二：醫療決策即時統計</h1>
+    <p class="site-subtitle">生命的重量，抉擇的天平 · 即時投票概覽</p>
+  </header>
 
-  <div class="w-full max-w-5xl bg-white p-8 rounded-xl shadow-lg">
-    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">情境二：醫療決策即時統計</h1>
-    
-    <div class="flex justify-end mb-4">
-      <button onclick="fetchAndRenderData()" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition shadow flex items-center">
-        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-        手動更新數據
-      </button>
-    </div>
-
-    <div class="relative h-[500px] w-full">
-      <canvas id="responsesChart"></canvas>
-    </div>
-  </div>
+  <main class="main-content">
+    <section class="dashboard-card">
+      <div class="toolbar">
+        <button type="button" class="refresh-btn" onclick="fetchAndRenderData()" aria-label="手動更新數據">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+          手動更新數據
+        </button>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="responsesChart"></canvas>
+      </div>
+    </section>
+  </main>
 
   <script>
-    // ★ 這裡是您情境二專屬的 GAS 網址，已自動加上 ?action=getStats 參數
     const GAS_URL = "https://script.google.com/macros/s/AKfycbyIvQpjC_vFM40WoNp5xieTQ0jjgadN-bPoU-aVV-XgHwEj9WN0_3HsdfMfwqneTpw/exec?action=getStats";
+    let myChart = null;
 
-    let myChart = null; 
-
-    // 從 Google 試算表抓取統計資料並繪圖的函式
     async function fetchAndRenderData() {
       try {
-        // 發送請求去拿資料
         const response = await fetch(GAS_URL);
         const json = await response.json();
-        
-        // 從 GAS 回傳的 JSON 結構中取出 data 物件
-        const stats = json.data; 
+        const stats = json.data;
 
-        // 取得 canvas 元素準備畫圖
         const ctx = document.getElementById('responsesChart').getContext('2d');
-        
-        // 如果已經存在舊圖表，先銷毀它，避免畫面重疊錯誤
         if (myChart !== null) {
           myChart.destroy();
         }
 
-        // 建立新的 Chart.js 長條圖
         myChart = new Chart(ctx, {
-          type: 'bar', 
+          type: 'bar',
           data: {
-            // ★ 設定 X 軸的標籤 (已配合情境二題目做適度簡化，方便投影閱讀)
             labels: [
-              '【Option A】生命無價，違反「行善原則」', 
-              '【Option B】違反「不傷害原則」(無效醫療)', 
+              '【Option A】生命無價，違反「行善原則」',
+              '【Option B】違反「不傷害原則」(無效醫療)',
               '【Option C】完全符合倫理(活著即行善)'
             ],
             datasets: [{
               label: '選擇人數',
-              // 把 GAS 算好的選項次數填進來
-              data: [stats["Option A"], stats["Option B"], stats["Option C"]],
-              backgroundColor: [
-                'rgba(239, 68, 68, 0.7)',   // 選項 A: 紅色 (Red 500)
-                'rgba(59, 130, 246, 0.7)',  // 選項 B: 藍色 (Blue 500)
-                'rgba(245, 158, 11, 0.7)'   // 選項 C: 橘黃 (Amber 500)
-              ],
-              borderColor: [
-                'rgb(239, 68, 68)',
-                'rgb(59, 130, 246)',
-                'rgb(245, 158, 11)'
-              ],
+              data: [stats["Option A"] || 0, stats["Option B"] || 0, stats["Option C"] || 0],
+              backgroundColor: ['rgba(184, 80, 66, 0.75)', 'rgba(122, 158, 137, 0.75)', 'rgba(184, 169, 79, 0.75)'],
+              borderColor: ['rgb(184, 80, 66)', 'rgb(122, 158, 137)', 'rgb(184, 169, 79)'],
               borderWidth: 1,
-              borderRadius: 6 // 圓角設計
+              borderRadius: 6
             }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-              legend: { display: false } // 隱藏頂部圖例，因為下方 X 軸已經很清楚了
+              legend: { display: false }
             },
             scales: {
               y: {
                 beginAtZero: true,
                 ticks: {
-                  stepSize: 1, // 票數必定是整數
-                  font: { size: 18 } // 加大字體方便投影閱讀
+                  stepSize: 1,
+                  font: { size: 18 }
                 }
               },
               x: {
                 ticks: {
-                  font: { size: 16 } // 加大字體方便投影閱讀 (情境二文字較長，字體稍微調為 16)
+                  font: { size: 16 }
                 }
               }
             }
           }
         });
       } catch (error) {
-        console.error("讀取資料發生錯誤:", error);
+        console.error('讀取資料發生錯誤:', error);
       }
     }
 
-    // 1. 網頁剛載入時，立刻抓取並顯示一次資料
     fetchAndRenderData();
-
-    // 2. 設定計時器：每 10 秒自動重新整理圖表 (10000 毫秒)
     setInterval(fetchAndRenderData, 10000);
   </script>
 </body>

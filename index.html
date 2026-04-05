@@ -434,6 +434,156 @@
     font-style: italic;
   }
 
+  .nonmaleficence-panel {
+    background: #ECEBE7;
+    border: 1px solid var(--sand-dark);
+    border-radius: 16px;
+    box-shadow: 0 10px 24px rgba(92, 61, 46, 0.08);
+    padding: 1.9rem 1.8rem 2rem;
+  }
+
+  .nonmaleficence-header {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.1rem;
+    color: var(--text-primary);
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.55rem, 4vw, 2.5rem);
+    font-weight: 900;
+  }
+
+  .nonmaleficence-header svg {
+    width: 56px;
+    height: 56px;
+    stroke: #45673C;
+    fill: none;
+    flex-shrink: 0;
+  }
+
+  .nonmaleficence-definition {
+    background: #DCDDC9;
+    border-left: 6px solid #9FA371;
+    padding: 1rem 1.2rem;
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.05rem, 2.5vw, 1.55rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: 1.4rem;
+  }
+
+  .nonmaleficence-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.95fr;
+    gap: 1.35rem;
+    align-items: stretch;
+    margin-bottom: 1.25rem;
+  }
+
+  .harm-scope {
+    background: #F6F3EB;
+    border: 1px solid #ded7ce;
+    padding: 1.15rem 1.1rem 1.2rem;
+    box-shadow: 0 3px 8px rgba(92, 61, 46, 0.08);
+  }
+
+  .harm-scope h3 {
+    margin-bottom: 0.8rem;
+    color: #3E6A34;
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.35rem, 2.7vw, 1.85rem);
+    font-weight: 900;
+  }
+
+  .harm-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.72rem;
+  }
+
+  .harm-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    color: var(--text-secondary);
+    font-size: clamp(1.04rem, 2.1vw, 1.25rem);
+    line-height: 1.45;
+  }
+
+  .harm-badge {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #7A5A4A;
+    color: #fff;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transform: translateY(0.08rem);
+  }
+
+  .nonmaleficence-compare {
+    background: #F2F2F2;
+    border: 1px solid #ded7ce;
+    box-shadow: 0 3px 8px rgba(92, 61, 46, 0.08);
+    padding: 1rem 1.1rem 1.2rem;
+    border-top: 8px solid #5C3D2E;
+  }
+
+  .nonmaleficence-compare h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: 'Noto Serif TC', serif;
+    color: var(--text-primary);
+    font-size: clamp(1.32rem, 2.6vw, 1.75rem);
+    font-weight: 900;
+    margin-bottom: 0.95rem;
+  }
+
+  .nonmaleficence-compare h3 svg {
+    width: 28px;
+    height: 28px;
+    fill: #9CBF85;
+  }
+
+  .compare-block + .compare-block {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed #d0c9bf;
+  }
+
+  .compare-label {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+    font-weight: 800;
+    margin-bottom: 0.2rem;
+  }
+
+  .compare-label.kill { color: #B85042; }
+  .compare-label.allowing { color: #7A9E89; }
+
+  .compare-text {
+    color: var(--text-secondary);
+    font-size: clamp(1.02rem, 2vw, 1.16rem);
+    line-height: 1.45;
+  }
+
+  .nonmaleficence-note {
+    background: #9A987C;
+    color: #F6F3EB;
+    padding: 1rem 1.15rem;
+    font-size: clamp(1.03rem, 2.1vw, 1.22rem);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
   .justice-panel {
     background: #ECEBE7;
     border: 1px solid var(--sand-dark);
@@ -745,6 +895,19 @@
       grid-template-columns: 1fr;
     }
 
+    .nonmaleficence-panel {
+      padding: 1.2rem;
+    }
+
+    .nonmaleficence-header svg {
+      width: 46px;
+      height: 46px;
+    }
+
+    .nonmaleficence-grid {
+      grid-template-columns: 1fr;
+    }
+
     .justice-panel {
       padding: 1.2rem;
     }
@@ -860,7 +1023,7 @@
     <span class="p-en">Beneficence</span>
   </div>
   <!-- 不傷害原則 -->
-  <div class="principle-chip">
+  <div class="principle-chip is-clickable" id="nonmaleficence-trigger" role="button" tabindex="0" aria-expanded="false" aria-controls="nonmaleficence-detail">
     <svg viewBox="0 0 24 24" fill="none" stroke="var(--olive)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
     <span class="p-label">不傷害原則</span>
     <span class="p-en">Non-maleficence</span>
@@ -969,6 +1132,52 @@
         </div>
       </aside>
     </div>
+  </div>
+</section>
+
+<section class="principle-detail" id="nonmaleficence-detail">
+  <div class="nonmaleficence-panel">
+    <h2 class="nonmaleficence-header">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V5l8-3z"/></svg>
+      不傷害原則 Non-maleficence
+    </h2>
+
+    <p class="nonmaleficence-definition">
+      定義：有意識地避免（Intentional Avoidance）對他人造成任何傷害或惡行
+    </p>
+
+    <div class="nonmaleficence-grid">
+      <article class="harm-scope">
+        <h3>「傷害」的範疇</h3>
+        <ul class="harm-list">
+          <li><span class="harm-badge">✕</span><span>造成痛苦（應由病人定義）</span></li>
+          <li><span class="harm-badge">✕</span><span>造成功能上的喪失（行為、行動能力）</span></li>
+          <li><span class="harm-badge">✕</span><span>造成冒犯（引發不愉快）</span></li>
+          <li><span class="harm-badge">✕</span><span>剝奪他人生活中的善或福祉</span></li>
+        </ul>
+      </article>
+
+      <aside class="nonmaleficence-compare">
+        <h3>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 2.2 1 4.2 2.6 5.5V18a2 2 0 0 0 2 2h4.8a2 2 0 0 0 2-2v-3.5A7 7 0 0 0 12 2z"/></svg>
+          關鍵區辨
+        </h3>
+
+        <div class="compare-block">
+          <p class="compare-label kill">Kill（殺害）</p>
+          <p class="compare-text">主動終結生命。</p>
+        </div>
+
+        <div class="compare-block">
+          <p class="compare-label allowing">Allowing to Die（允許自然死亡）</p>
+          <p class="compare-text">允許疾病自然病程導致死亡。</p>
+        </div>
+      </aside>
+    </div>
+
+    <p class="nonmaleficence-note">
+      關鍵在醫療人員在各種情境下，是否被賦予治療／給予／不給予的責任。善與福祉的定義，也可由病人來決定。
+    </p>
   </div>
 </section>
 
@@ -1131,6 +1340,8 @@
   const autonomyDetail = document.getElementById('autonomy-detail');
   const beneficenceTrigger = document.getElementById('beneficence-trigger');
   const beneficenceDetail = document.getElementById('beneficence-detail');
+  const nonmaleficenceTrigger = document.getElementById('nonmaleficence-trigger');
+  const nonmaleficenceDetail = document.getElementById('nonmaleficence-detail');
   const justiceTrigger = document.getElementById('justice-trigger');
   const justiceDetail = document.getElementById('justice-detail');
 
@@ -1159,6 +1370,20 @@
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       openBeneficenceDetail();
+    }
+  });
+
+  function openNonmaleficenceDetail() {
+    nonmaleficenceDetail.classList.add('show');
+    nonmaleficenceTrigger.setAttribute('aria-expanded', 'true');
+    nonmaleficenceDetail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  nonmaleficenceTrigger.addEventListener('click', openNonmaleficenceDetail);
+  nonmaleficenceTrigger.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openNonmaleficenceDetail();
     }
   });
 

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>醫學倫理情境五：決策結果儀表板</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen font-sans">
+
+  <div class="w-full max-w-5xl bg-white p-8 rounded-xl shadow-lg">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">情境五：醫療團隊支持即時統計</h1>
+    
+    <div class="flex justify-end mb-4">
+      <button onclick="fetchAndRenderData()" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition shadow flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        手動更新數據
+      </button>
+    </div>
+
+    <div class="relative h-[500px] w-full">
+      <canvas id="responsesChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    // ★ 這裡是您情境五專屬的 GAS 網址，已自動加上 ?action=getStats 參數
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyCgwZYGlCituD6Z664mxjNgjObhbfIPJLdvQtsWRgEa_pgGrN0F9BC5PtfcskOFyGKOA/exec?action=getStats";
+
+    let myChart = null; 
+
+    // 從 Google 試算表抓取統計資料並繪圖的函式
+    async function fetchAndRenderData() {
+      try {
+        const response = await fetch(GAS_URL);
+        const json = await response.json();
+        const stats = json.data; 
+
+        const ctx = document.getElementById('responsesChart').getContext('2d');
+        
+        if (myChart !== null) {
+          myChart.destroy();
+        }
+
+        // 建立新的 Chart.js 長條圖
+        myChart = new Chart(ctx, {
+          type: 'bar', 
+          data: {
+            // 設定 X 軸的標籤 (針對情境五的支持選項進行簡化)
+            labels: [
+              '【Option A】主管資深同事共擔', 
+              '【Option B】完整病歷與團隊共識', 
+              '【Option C】事後關懷與心理支持',
+              '【Option D】以上皆是 (需要被接住)'
+            ],
+            datasets: [{
+              label: '選擇人數',
+              // 填入 A, B, C, D 四個選項的數據
+              data: [
+                stats["Option A"] || 0, 
+                stats["Option B"] || 0, 
+                stats["Option C"] || 0, 
+                stats["Option D"] || 0
+              ],
+              backgroundColor: [
+                'rgba(239, 68, 68, 0.7)',   // A: 紅色
+                'rgba(59, 130, 246, 0.7)',  // B: 藍色
+                'rgba(245, 158, 11, 0.7)',  // C: 橘黃色
+                'rgba(139, 92, 246, 0.7)'   // D: 紫色 (代表全方位支持)
+              ],
+              borderColor: [
+                'rgb(239, 68, 68)',
+                'rgb(59, 130, 246)',
+                'rgb(245, 158, 11)',
+                'rgb(139, 92, 246)'
+              ],
+              borderWidth: 1,
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1, 
+                  font: { size: 18 }
+                }
+              },
+              x: {
+                ticks: {
+                  font: { size: 14 } // 情境五文字較多，字體稍縮小至 14 以免擠在一起
+                }
+              }
+            }
+          }
+        });
+      } catch (error) {
+        console.error("讀取資料發生錯誤:", error);
+      }
+    }
+
+    // 1. 網頁載入時立刻抓取一次
+    fetchAndRenderData();
+
+    // 2. 每 10 秒自動刷新
+    setInterval(fetchAndRenderData, 10000);
+  </script>
+</body>
+</html>
